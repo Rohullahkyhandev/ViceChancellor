@@ -2,8 +2,7 @@
     <div class="mt-10 mb-10 w-full">
         <div class="flex items-center justify-between w-full">
             <div>
-                <router-link :to="{ name: 'app.user.list' }"
-                    class="bg-blue-600 flex items-center justify-center gap-2 focus:ring  focus:ring-offset-2 focus:ring-blue-500 focus:ring-opacity-40 outline-none py-2 px-6 rounded-lg shadow text-white">
+                <router-link :to="{ name: 'app.user.list' }" class="btn-all">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 text-white">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -112,10 +111,8 @@
                 </div>
             </div>
             <footer class="bg-gray-100 py-4  md:flex gap-5">
-                <button type="submit"
-                    class="bg-green-600 mr-10 text-white focus:ring  focus:ring-offset-2 focus:ring-green-500 focus:ring-opacity-40 py-2 px-6 cursor-pointer rounded-lg ">ثبت</button>
-                <router-link :to="{ name: 'app.dashboard' }"
-                    class="bg-gray-400 text-white py-2 px-5 focus:ring  focus:ring-offset-2 focus:ring-red-500 focus:ring-opacity-40 cursor-pointer rounded-lg ">لغو
+                <button type="submit" class="footer-btn-indigo">ثبت</button>
+                <router-link :to="{ name: 'app.dashboard' }" class="footer-btn-red">لغو
                     ثبت</router-link>
             </footer>
         </form>
@@ -124,18 +121,26 @@
 </template>
 
 <script setup>
-import { ref, useSlots } from 'vue'
+import { computed, onMounted, ref, useSlots } from 'vue'
 import CustomInput from '../../components/core/CustomInput.vue'
 import { useUserStore } from '../../stores/user/userStore';
 
+
+onMounted(() => {
+    userStore.getUserDepartment();
+})
+
 const userStore = useUserStore();
-const user_type = ref([
-    { key: 'pdc', text: 'PDC' },
-    { key: 'آمریت استادان', text: 'آمریت استادان' },
-    { key: 'آمریت فوق لیسانس', text: 'آمریت فوق لیسانس' },
-    { key: 'آمریت تضمین کیفت', text: 'آمریت تضمین کیفت' },
-    { key: 'آمریت  تحقیقات علمی', text: 'آمریت  تحقیقات علمی' },
-])
+
+// const user_type = ref([
+//     { key: 'pdc', text: 'PDC' },
+//     { key: 'آمریت استادان', text: 'آمریت استادان' },
+//     { key: 'آمریت فوق لیسانس', text: 'آمریت فوق لیسانس' },
+//     { key: 'آمریت تضمین کیفت', text: 'آمریت تضمین کیفت' },
+//     { key: 'آمریت  تحقیقات علمی', text: 'آمریت  تحقیقات علمی' },
+// ])
+
+const user_type = computed(() => userStore.user_departments.map((c) => ({ key: c.id, text: c.display_name })))
 
 const user = ref({
     name: '',

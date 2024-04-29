@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between mb-4">
             <div class="mb-2">
                 <router-link :to="{ name: 'app.pdc.plan.create' }"
-                    class="bg-blue-600 rounded shadow text-white py-2 px-3 flex items-center justify-center gap-4 focus:ring focus:ring-indigo-600">
+                    class="bg-blue-600 rounded-lg shadow text-white py-2 px-3 flex items-center justify-center gap-4 focus:ring focus:ring-offset-2 focus:ring-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"

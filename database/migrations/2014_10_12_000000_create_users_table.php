@@ -24,6 +24,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->bigInteger('user_departments_id')->unsigned()->index();
+            $table->foreign('user_departments_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

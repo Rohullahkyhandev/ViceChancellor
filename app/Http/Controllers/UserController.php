@@ -6,6 +6,7 @@ use App\Http\Resources\PermissionResource;
 use App\Http\Resources\UserResource;
 use App\Models\permission;
 use App\Models\User;
+use App\Models\UserDepartments;
 use App\Models\userpermission;
 use Exception;
 use Illuminate\Http\Request;
@@ -41,6 +42,8 @@ class UserController extends Controller
         $search = request('search', '');
         $data = User::query()
             ->where('users.name', 'like', "%{$search}%")
+            ->join('user_departments', 'users.user_departments_id', 'user_departments.id')
+            ->select('users.*', 'user_departments.display_name as dname')
             ->orderBy("users.$sortField", $sortDirection)
             ->paginate($per_page);
 
@@ -69,6 +72,7 @@ class UserController extends Controller
         $user->position = $request->position;
         $user->photo = $path;
         $user->photo_path = $photo_path;
+        $user->user_departments_id = $request->user_type;
         $user->user_type = $request->user_type;
         $user->password = $request->password;
         $result = $user->save();
@@ -101,12 +105,16 @@ class UserController extends Controller
             $user = User::find($request->id);
             $photo = $user->photo;
             $photo_path = $user->photo_path;
+            $password = $user->password;
             if ($request->photo != '') {
                 if (is_file(storage_path('/app/public/users/' . $photo))) {
                     unlink(storage_path('/app/public/users/' . $photo));
                 }
                 $photo = $request->photo->store('/', 'users');
                 $photo_path = asset(Storage::url('users/' . $photo));
+            }
+            if ($request->password != '') {
+                $password = bcrypt($request->password);
             }
             $result = User::find($request->id)->update([
                 'name' => $request->name,
@@ -115,7 +123,8 @@ class UserController extends Controller
                 'photo' => $photo,
                 'photo_path' => $photo_path,
                 'user_type' => $request->user_type,
-                'password' => $request->password,
+                'user_departments_id' => $request->user_type,
+                'password' => $password,
             ]);
             DB::commit();
         } catch (Exception $e) {
@@ -207,6 +216,13 @@ class UserController extends Controller
             unlink(storage_path('/app/public/users/' . $user->photo));
         }
         return $result;
+    }
+
+    // get user department
+
+    public function getUserDepartment()
+    {
+        return UserDepartments::all();
     }
 
 

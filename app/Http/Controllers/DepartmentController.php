@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\DepartmentResource;
 use App\Http\Resources\DepartmentsResource;
+use App\Http\Resources\TeacherDepartmentResource;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr\FuncCall;
 
 class DepartmentController extends Controller
 {
@@ -31,6 +33,21 @@ class DepartmentController extends Controller
             ->orderBy("departments.$sortField", $sortDirection)
             ->paginate($per_page);
         return DepartmentResource::collection($data);
+    }
+
+    public function getDepartmentTeacher()
+    {
+        $search = request('search', '');
+        $per_page = request('per_page', 10);
+        $id = request('id');
+
+        $data = Department::query()
+            ->where('departments.id', $id)
+            ->where('departments.name', $search)
+            ->join('teachers', 'departments.id', 'teachers.department_id')
+            ->select('departments.*', 'teachers.name as tname', 'teachers.email as temail', 'teachers.academic_rank as arank', 'teachers.photo_path as photo')
+            ->paginate($per_page);
+        return TeacherDepartmentResource::collection($data);
     }
 
     public function store(Request $request, $id = '')
@@ -69,5 +86,47 @@ class DepartmentController extends Controller
             ->select('departments.name as department_name', 'departments.id as department_id')
             ->get();
         return DepartmentsResource::collection($data);
+    }
+
+    public function getDepartment($id)
+    {
+        $data  = Department::find($id);
+        return $data;
+    }
+
+    public function update(Request $request)
+    {
+
+        $result = 0;
+        $request->validate([
+            'name' => 'required',
+            'date' => 'date',
+            'description' => 'required|string',
+        ]);
+
+        $department_id = $request->id;
+        $department = Department::find($department_id);
+
+        $department->name = $request->name;
+        $department->date = $request->date;
+        $department->description = $request->description;
+        $result = $department->save();
+
+        if ($result) {
+            return response([
+                'message' => 'ویراش موفقانه انجام شد'
+            ], 200);
+        } else {
+            return response([
+                'message' => 'ویرایش موفقانه انجام نشد'
+            ], 304);
+        }
+    }
+
+
+    public function destroy($id = '')
+    {
+        $result = Department::destroy($id);
+        return $result;
     }
 }

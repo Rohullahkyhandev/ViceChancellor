@@ -40,6 +40,7 @@ class FacultyController extends Controller
     }
 
 
+    // get all the teacher according to the department and department
     public function store(Request $request)
     {
 

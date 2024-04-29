@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between w-full">
             <div>
                 <router-link :to="{ name: 'app.pdc.plan.list' }"
-                    class="bg-blue-600 flex items-center justify-center gap-2 focus:ring focus:ring-blue-500 outline-none py-2 px-6 rounded shadow text-white">
+                    class="bg-blue-600 flex items-center justify-center gap-2 focus:ring   focus:ring-offset-2 focus:ring-blue-500 outline-none py-2 px-6 rounded-lg shadow text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 text-white">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -54,9 +54,10 @@
 
                 <div class="mt-5">
 
-                    <div class="md:flex items-center justify-center">
+                    <div class="md:flex md:items-center ">
                         <div class="w-2/12">
-                            <label for="" class=" text-gray-600">موضوع<span class="text-red-500 px-2">*</span></label>
+                            <label for="" class="form-label">موضوع<span
+                                    class="text-red-500 px-2">*</span></label>
                         </div>
                         <div class="w-6/12">
                             <CustomInput type="text" v-model="plan.subject" class="mb-2" required="required" />
@@ -64,9 +65,10 @@
                     </div>
 
 
-                    <div class="md:flex items-center justify-center">
+                    <div class="md:flex md:items-center">
                         <div class="w-2/12">
-                            <label for="" class=" text-gray-600">تاریخ<span class="text-red-500 px-2">*</span></label>
+                            <label for="" class="form-label">تاریخ<span
+                                    class="text-red-500 px-2">*</span></label>
                         </div>
                         <div class="w-6/12">
                             <CustomInput type="date" v-model="plan.date" class="mb-2" required="required" />
@@ -74,9 +76,10 @@
                     </div>
 
 
-                    <div class="md:flex items-center justify-center">
+                    <div class="md:flex md:items-center ">
                         <div class="w-2/12">
-                            <label for="" class=" text-gray-600">فایل پلان<span class="text-red-500 px-2">*</span></label>
+                            <label for="" class="form-label">فایل پلان<span
+                                    class="text-red-500 px-2">*</span></label>
                         </div>
                         <div class="w-6/12">
                             <CustomInput type="file" @change="file => plan.document = file" class="mb-2"
@@ -84,9 +87,9 @@
                         </div>
                     </div>
 
-                    <div class="md:flex items-center justify-center">
+                    <div class="md:flex md:items-center ">
                         <div class="w-2/12">
-                            <label for="" class=" text-gray-600">
+                            <label for="" class="form-label">
                                 خلاصه مطلب<span class="text-red-500 px-2"></span></label>
                         </div>
                         <div class="w-6/12">
@@ -98,7 +101,7 @@
             </div>
             <footer class="bg-gray-100 py-4  md:flex gap-5">
                 <button type="submit"
-                    :class="[planStore.loading === true ? 'bg-green-600 mr-10 text-white py-2 px-6 cursor-not-allowed rounded focus:ring focus:ring-green-500' : 'bg-green-600 mr-10 text-white py-2 px-6 cursor-pointer rounded focus:ring focus:ring-green-500']">
+                    :class="[planStore.loading === true ? 'footer-btn-indigo':'footer-btn-indigo']">
                     <span v-if="planStore.loading === true">
                         <svg class="animate-spin -ml-1 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24">
@@ -114,8 +117,8 @@
                     </span>
 
                 </button>
-                <router-link :to="{ name: 'app.dashboard' }"
-                    class="bg-gray-400 text-white py-2 px-5 cursor-pointer rounded focus:ring focus:ring-gray-300">لغو
+                <router-link :to="{ name: 'app.pdc.plan.list' }"
+                    class="footer-btn-red">لغو
                     ثبت</router-link>
             </footer>
         </form>

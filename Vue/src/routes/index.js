@@ -17,22 +17,23 @@ import UserDelete from '../views/users/delete.vue'
 import UserPermission from '../views/users/userPermission.vue'
 import CreatePermission from '../views/users/createPermission.vue'
 
-// pdc
-import PDC_Document from '../views/pdc/table.vue'
-// send document
-import SendDocument from '../views/pdc/sendDocument/index.vue'
-import CreateSendDocument from '../views/pdc/sendDocument/create.vue'
-import EditSendDocument from '../views/pdc/sendDocument/edit.vue'
+// // pdc
+// import PDC_Document from '../views/pdc/table.vue'
 
-// received document
-import ReceivedDocument from '../views/pdc/receivedDocument/index.vue'
-import CreateReceivedDocument from '../views/pdc/receivedDocument/create.vue'
-import EditReceivedDocument from '../views/pdc/receivedDocument/edit.vue'
+
+
+// documents
+import tableDocument from '../views/documents/table.vue'
+import listDocument from '../views/documents/index.vue'
+import newDocumentCreate from '../views/documents/create.vue'
+import draftDocument from '../views/documents/document_draft.vue'
+// import draftDocument from '../views/documents/document_draft.vue'
 
 // pdc plan
 import CreatePlan from '../views/pdc/plan/create.vue'
 import ListPlan from '../views/pdc/plan/index.vue'
 import EditPlan from '../views/pdc/plan/edit.vue'
+
 
 // pdc archive
 import CreateArchive from '../views/pdc/pdcArchives/create.vue'
@@ -47,6 +48,8 @@ import EditFaculty from '../views/faculties/edit.vue'
 
 // department
 import CreateDepartment from '../views/department/create.vue'
+import EditDepartment from '../views/department/edit.vue'
+import teacherDepartment from '../views/department/department_teacher.vue'
 
 // teacher
 import CreateTeacher from '../views/teachers/create.vue'
@@ -54,12 +57,24 @@ import ListTeacher from '../views/teachers/index.vue'
 import detailsTeacher from '../views/teachers/details.vue'
 import editTeacher from '../views/teachers/edit.vue'
 import createQualification from '../views/teachers/qualification.vue'
+import editQualification from '../views/teachers/edit_qualification.vue'
 
 // teacher document
 import createDocument from '../views/teachers/document.vue'
 import editDocument from '../views/teachers/edit_document.vue'
 // teacher literature
 import createLiterature from '../views/teachers/literature.vue'
+
+// articles
+import createArticle from '../views/teachers/article.vue'
+import editArticle from '../views/teachers/article_edit.vue'
+
+
+// students
+import createStudent from '../views/students/create.vue'
+import StudentList from '../views/students/index.vue'
+import StudentDetails from '../views/students/details.vue'
+import StudentEdit from '../views/students/edit.vue'
 
 const routes = [
 
@@ -119,52 +134,67 @@ const routes = [
                 component: UserList
             },
 
-            // pdc
+
+            // documents
             {
-                path: '/pdc/documents',
-                name: 'app.pdc.documents',
-                redirect: '/pdc/documents/received',
-                component: PDC_Document,
+                path: 'documents',
+                name: 'app.documents',
+                redirect: '/document/list',
+                component: tableDocument,
                 children: [
-                    // send documents route
                     {
-                        path: 'send',
-                        name: 'app.pdc.send_document',
-                        component: SendDocument,
+                        path: '/document/list',
+                        name: 'app.document.list',
+                        component: listDocument
                     },
-                    // received document
+
                     {
-                        path: 'received',
-                        name: 'app.pdc.received_document',
-                        component: ReceivedDocument,
+                        path: '/document/new/create',
+                        name: 'app.document_new.create',
+                        component: newDocumentCreate
                     },
-                ],
 
+                    {
+                        path: '/document/draft/create',
+                        name: 'app.document_draft.create',
+                        component: draftDocument
+                    }
+                ]
             },
+            // // pdc
+            // {
+            //     path: '/pdc/documents',
+            //     name: 'app.pdc.documents',
+            //     redirect: '/pdc/documents/received',
+            //     component: PDC_Document,
+            //     children: [
+            //         // send documents route
+            //         {
+            //             path: 'send',
+            //             name: 'app.pdc.send_document',
+            //             component: SendDocument,
+            //         },
+            //         // received document
+            //         {
+            //             path: 'received',
+            //             name: 'app.pdc.received_document',
+            //             component: ReceivedDocument,
+            //         },
+
+            //         // unprocessed documents
+            //         {
+            //             path: 'document/create',
+            //             name: 'app.pdc.document.create',
+            //             component: unProcessDocCreate
+            //         }
+            //     ],
+
+            // },
 
 
-            {
-                path: 'documents/received/create',
-                name: 'app.pdc.received_document_create',
-                component: CreateReceivedDocument,
-            },
-            {
-                path: 'documents/received/edit/:id',
-                name: 'app.pdc.received_document.edit',
-                component: EditReceivedDocument,
-            },
 
-            //send document
-            {
-                path: 'documents/send/create',
-                name: 'app.pdc.send_document_create',
-                component: CreateSendDocument,
-            },
-            {
-                path: 'documents/send/edit/:id',
-                name: 'app.pdc.send_document.edit',
-                component: EditSendDocument,
-            },
+
+
 
             //plan
             {
@@ -230,6 +260,19 @@ const routes = [
                 component: CreateDepartment
             },
 
+
+            {
+                path: 'faculty/department/edit/:id',
+                name: 'app.faculty.department.edit',
+                component: EditDepartment
+            },
+
+            {
+                path: 'faculty/department/teacher/:id',
+                name: 'app.department.teacher',
+                component: teacherDepartment
+            },
+
             // teacher
             {
                 path: 'faculty/teacher/create',
@@ -259,15 +302,33 @@ const routes = [
             },
 
             {
+                path: 'qualification/edit/:id',
+                name: 'app.teacher.qualification.edit',
+                component: editQualification
+            },
+
+            {
                 path: 'document/create/:id',
                 name: 'app.document.create',
                 component: createDocument
             },
 
             {
-                path: 'document/edit/:id',
+                path: 'document/edit/:id/:t_id',
                 name: 'app.document.edit',
                 component: editDocument
+            },
+
+            {
+                path: 'article/create/:id',
+                name: 'app.teacher.article.create',
+                component: createArticle
+            },
+
+            {
+                path: 'article/edit/:id/:t_id',
+                name: 'app.article.edit',
+                component: editArticle
             },
 
             {
@@ -275,6 +336,29 @@ const routes = [
                 name: 'app.literature.create',
                 component: createLiterature
             },
+
+            // students
+            {
+                path: 'student/create',
+                name: 'app.student.create',
+                component: createStudent
+            },
+            {
+                path: 'student/list',
+                name: 'app.student.list',
+                component: StudentList
+            },
+            {
+                path: 'student/details/:id',
+                name: 'app.student.details',
+                component: StudentDetails
+            },
+
+            {
+                path: 'student/edit/:id',
+                name: 'app.student.edit',
+                component: StudentEdit
+            }
 
 
         ]

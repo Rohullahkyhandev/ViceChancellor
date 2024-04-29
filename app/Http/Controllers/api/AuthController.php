@@ -27,7 +27,8 @@ class AuthController extends Controller
         //     'photo_path' => 'http://localhost/image.jpg',
         //     'photo' => 'test.jpg',
         //     'password' => $request->password,
-        //     'user_type' => 'admin'
+        //     'user_type' => 'admin',
+        //     'user_departments_id' => 1,p
         // ]);
 
         if (!Auth::attempt($credential)) {

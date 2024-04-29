@@ -9,7 +9,6 @@ class permission extends Model
 {
     use HasFactory;
 
-
     public function user()
     {
         $this->belongsToMany(User::class, 'user_permissions');

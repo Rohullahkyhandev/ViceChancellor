@@ -2,8 +2,7 @@
     <div class="mt-10 mb-10 w-full">
         <div class="flex items-center justify-between w-full">
             <div>
-                <router-link :to="{ name: 'app.teacher.details', params: { id: $route.params.id } }"
-                    class="bg-blue-600 flex items-center justify-center gap-2 focus:ring focus:ring-blue-500 outline-none py-2 px-6 rounded-lg shadow text-white">
+                <router-link :to="{ name: 'app.teacher.details', params: { id: $route.params.id } }" class="btn-all">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 text-white">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -52,32 +51,19 @@
                 <!-- end of display message area -->
                 <div>
                     <div class="border-b py-2 mb-3">
-                        <h1 class="font-bold text-xl ">فورم ثبت مقالات استادان</h1>
+                        <h1 class="font-bold text-xl ">فورم ثبت آثار علمی استادان</h1>
                     </div>
                 </div>
 
                 <div class="mt-5">
                     <div class="md:flex md:items-center md:justify-center">
                         <div class="md:w-2/12">
-                            <label class="block text-gray-500 md:text-left mb-1 md:mb-0">عنوان مقاله
+                            <label class="form-label"> نام اثر
                                 <span class="text-red-500 px-4">*</span>
                             </label>
                         </div>
                         <div class="md:w-6/12">
-                            <CustomInput type="text" v-model="teacher_article.title" class="mb-2" required="required" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-5">
-                    <div class="md:flex md:items-center md:justify-center">
-                        <div class="md:w-2/12">
-                            <label class="block text-gray-500 md:text-left mb-1 md:mb-0">تاریخ نشر
-                                <span class="text-red-500 px-4">*</span>
-                            </label>
-                        </div>
-                        <div class="md:w-6/12">
-                            <CustomInput type="date" v-model="teacher_article.date" class="mb-2" required="required" />
+                            <CustomInput type="text" v-model="teacher_literature.name" class="mb-2" required="required" />
                         </div>
                     </div>
                 </div>
@@ -85,12 +71,12 @@
                 <div class="mt-5">
                     <div class="md:flex md:items-center md:justify-center">
                         <div class="md:w-2/12">
-                            <label class="block text-gray-500 md:text-left mb-1 md:mb-0">لینک آدرس
+                            <label class="form-label"> نوع اثر
                                 <span class="text-red-500 px-4">*</span>
                             </label>
                         </div>
                         <div class="md:w-6/12">
-                            <CustomInput type="url" v-model="teacher_article.publisher" class="mb-2" required="required" />
+                            <CustomInput type="text" v-model="teacher_literature.type" class="mb-2" required="required" />
                         </div>
                     </div>
                 </div>
@@ -98,21 +84,35 @@
                 <div class="mt-5">
                     <div class="md:flex md:items-center md:justify-center">
                         <div class="md:w-2/12">
-                            <label class="block text-gray-500 md:text-left mb-1 md:mb-0">توضیحات
+                            <label class="form-label">تاریخ نشر
                                 <span class="text-red-500 px-4">*</span>
                             </label>
                         </div>
                         <div class="md:w-6/12">
-                            <CustomInput type="textarea" v-model="teacher_article.description" class="mb-2"
+                            <CustomInput type="date" v-model="teacher_literature.date" class="mb-2" required="required" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <div class="md:flex md:items-center md:justify-center">
+                        <div class="md:w-2/12">
+                            <label class="form-label"> ژورنال
+                                <span class="text-red-500 px-4">*</span>
+                            </label>
+                        </div>
+                        <div class="md:w-6/12">
+                            <CustomInput type="url" v-model="teacher_literature.publisher" class="mb-2"
                                 required="required" />
                         </div>
                     </div>
                 </div>
 
+
+
             </div>
             <footer class="bg-gray-100 py-4  md:flex gap-5">
-                <button type="submit"
-                    :class="[teacherStore.loading === true ? 'bg-green-600 mr-10 text-white py-2 px-6 cursor-not-allowed rounded-lg focus:ring focus:ring-green-500' : 'bg-green-600 mr-10 text-white py-2 px-6 cursor-pointer rounded-lg focus:ring focus:ring-green-500']">
+                <button type="submit" :class="[teacherStore.loading === true ? 'footer-btn-indigo' : 'footer-btn-indigo']">
                     <span v-if="teacherStore.loading === true">
                         <svg class="animate-spin -ml-1 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24">
@@ -128,8 +128,7 @@
                     </span>
 
                 </button>
-                <router-link :to="{ name: 'app.dashboard' }"
-                    class="bg-gray-400 text-white py-2 px-5 cursor-pointer rounded-lg focus:ring focus:ring-gray-300">لغو
+                <router-link :to="{ name: 'app.dashboard' }" class="footer-btn-red">لغو
                     ثبت</router-link>
             </footer>
         </form>
@@ -146,13 +145,12 @@ import { useTeacherStore } from '../../stores/teachers/teacherStore'
 const teacherStore = useTeacherStore();
 const route = useRoute();
 
-const teacher_article = computed(() => teacherStore.teacher_articles);
+const teacher_literature = computed(() => teacherStore.teacher_articles);
 
 
 function onSubmit() {
     let id = route.params.id;
-
-    teacherStore.createArticle(teacher_article.value, id);
+    teacherStore.createLiterature(teacher_literature.value, id);
 }
 
 </script>

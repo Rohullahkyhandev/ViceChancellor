@@ -3,16 +3,17 @@
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\NewDocumentController;
 use App\Http\Controllers\PDC\ArchiveController;
 use App\Http\Controllers\PDC\PlanController;
-use App\Http\Controllers\PDC\ReceivedController;
-use App\Http\Controllers\PDC\SendDocumentController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use App\Models\Department;
 use App\Models\ReceivedDocument;
 use App\Models\SendDocument;
 use App\Models\Teacher;
+use App\Student;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,47 +37,26 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
     // user
     Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user_department', [UserController::class, 'getUserDepartment']);
     Route::post('/user/create', [UserController::class, 'store']);
     Route::get('/user/edit/{id}', [UserController::class, 'edit']);
     Route::post('/user/update', [UserController::class, 'update']);
     Route::get('/user/delete/{id}', [UserController::class, 'delete_user']);
 
-
+    //  user permission
     Route::get('/permission/list/{id}', [UserController::class, 'get_user_permission']);
     Route::get('/permission', [UserController::class, 'user_permission_list']);
     Route::post('/permission/store', [UserController::class, 'storePermission']);
     Route::get('/permission/delete/{id}', [UserController::class, 'deletePermission']);
     Route::get('/user/current/permission', [AuthController::class, 'getCurrentPermission']);
+    // end of user routes
 
 
-    // pdc received Documents
-    Route::middleware(['auth:sanctum', 'view_document'])->group(function () {
-        Route::get('/receivedDocument', [ReceivedController::class, 'index']);
-    });
-    Route::middleware(['auth:sanctum', 'edit_document'])->group(function () {
-        Route::get('/pdc/received_document/edit/{id}', [ReceivedController::class, 'edit']);
-        Route::post('/pdc/received_document/update', [ReceivedController::class, 'update']);
-    });
+
+    //  new document as common part of system
     Route::middleware(['auth:sanctum', 'create_document'])->group(function () {
-        Route::post('/pdc/received_document/store', [ReceivedController::class, 'store']);
-    });
-    Route::middleware(['auth:sanctum', 'delete_document'])->group(function () {
-        Route::get('/pdc/received_document/delete/{id}', [ReceivedController::class, 'destroy']);
-    });
-
-    // pdc send Documents
-    Route::middleware(['auth:sanctum', 'create_document'])->group(function () {
-        Route::post('/pdc/send_document/store', [SendDocumentController::class, 'store']);
-    });
-    Route::middleware(['auth:sanctum', 'view_document'])->group(function () {
-        Route::get('/sendDocument', [SendDocumentController::class, 'index']);
-    });
-    Route::middleware(['auth:sanctum', 'edit_document'])->group(function () {
-        Route::get('/pdc/send_document/edit/{id}', [SendDocumentController::class, 'edit']);
-        Route::post('/pdc/send_document/update', [SendDocumentController::class, 'update']);
-    });
-    Route::middleware(['auth:sanctum', 'delete_document'])->group(function () {
-        Route::get('/pdc/send_document/delete/{id}', [SendDocumentController::class, 'destroy']);
+        Route::post('/document/create', [NewDocumentController::class, 'store']);
+        Route::get('/documents', [NewDocumentController::class, 'index']);
     });
 
     // pdc plan
@@ -121,12 +101,21 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::get('/faculty/department', [DepartmentController::class, 'getFacultyDepartment']);
         Route::post('/faculty/department/create/{id}', [DepartmentController::class, 'store']);
         Route::get('/get/departments/{id}', [DepartmentController::class, 'getDepartments']);
+        Route::get('/department/details/{id}', [DepartmentController::class, 'getDepartment']);
+        Route::post('/department/update', [DepartmentController::class, 'update']);
+        Route::get('/department/delete/{id}', [DepartmentController::class, 'destroy']);
+    });
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('/department/teacher', [DepartmentController::class, 'getDepartmentTeacher']);
     });
 
     // teacher
     Route::middleware(['auth:sanctum', 'create_teacher'])->group(function () {
+
         Route::get('/teacher', [TeacherController::class, 'index']);
         Route::post('/teacher/create', [TeacherController::class, 'store']);
+        Route::get('/teacher/edit/{id}', [TeacherController::class, 'getTeacher']);
         Route::get('/faculty/department/get', [TeacherController::class, 'getFacultyDepartment']);
         Route::get('/teacher/details/{id}', [TeacherController::class, 'getTeacher']);
         // qualification
@@ -136,14 +125,26 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::get('/teacher/qualification/delete/{id}', [TeacherController::class, 'destroyQualification']);
         // documents
         Route::post('/teacher/document/create/{id}', [TeacherController::class, 'storeDocument']);
-        Route::get('/teacher/document/{id}', [TeacherController::class, 'getDocument']);
+        Route::get('/teacher/document', [TeacherController::class, 'getDocument']);
+        Route::get('/teacher/document/edit/{id}', [TeacherController::class, 'editDocument']);
         Route::post('/teacher/document/update/{id}', [TeacherController::class, 'updateDocument']);
         Route::get('/teacher/document/delete/{id}', [TeacherController::class, 'destroyDocument']);
         // article
         Route::post('/teacher/article/create/{id}', [TeacherController::class, 'storeArticle']);
-        Route::get('/teacher/article/{id}', [TeacherController::class, 'getArticle']);
+        Route::get('/teacher/article', [TeacherController::class, 'getArticle']);
+        Route::get('/teacher/article/edit/{id}', [TeacherController::class, 'editArticle']);
         Route::post('/teacher/article/update/{id}', [TeacherController::class, 'updateArticle']);
         Route::get('/teacher/article/delete/{id}', [TeacherController::class, 'destroyArticle']);
+
+        // literature
+        Route::post('/teacher/literature/create/{id}', [TeacherController::class, 'storeLiterature']);
+        Route::get('/teacher/literature', [TeacherController::class, 'getLiterature']);
+        Route::get('/teacher/literature/edit/{id}', [TeacherController::class, 'editLiterature']);
+        Route::post('/teacher/literature/update/{id}', [TeacherController::class, 'updateLiterature']);
+        Route::get('/teacher/literature/delete/{id}', [TeacherController::class, 'destroyLiterature']);
+
+        // get all departments
+        Route::get('/teacher/get_all_department', [TeacherController::class, 'getallDepartments']);
     });
 
     Route::middleware(['auth:sanctum', 'edit_teacher'])->group(function () {
@@ -151,6 +152,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     });
     Route::middleware(['auth:sanctum', 'delete_teacher'])->group(function () {
         Route::post('/teacher/delete/{id}', [TeacherController::class, 'destroy']);
+    });
+
+    // student
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('/student', [StudentController::class, 'index']);
+        Route::post('/student/create', [StudentController::class, 'store']);
+        Route::get('/student/edit/{id}', [StudentController::class, 'edit']);
+        Route::post('/student/update', [StudentController::class, 'update']);
+        Route::get('/student/delete/{id}', [StudentController::class, 'delete']);
     });
 });
 

@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between w-full">
             <div>
                 <router-link :to="{ name: 'app.teacher.details', params: { id: $route.params.id } }"
-                    class="bg-blue-600 flex items-center justify-center gap-2 focus:ring focus:ring-blue-500 outline-none py-2 px-6 rounded-lg shadow text-white">
+                    class="btn-all">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 text-white">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -59,8 +59,8 @@
                 <div class="mt-5">
                     <div class="md:flex md:items-center md:justify-center">
                         <div class="md:w-2/12">
-                            <label class="block text-gray-500 md:text-left mb-1 md:mb-0">نوع سند
-                                <span class="text-red-500 px-4">*</span>
+                            <label class="form-label">نوع سند
+                                <span class="text-red-500 px-2">*</span>
                             </label>
                         </div>
                         <div class="md:w-6/12">
@@ -72,8 +72,8 @@
                 <div class="mt-5">
                     <div class="md:flex md:items-center md:justify-center">
                         <div class="md:w-2/12">
-                            <label class="block text-gray-500 md:text-left mb-1 md:mb-0">سند
-                                <span class="text-red-500 px-4">*</span>
+                            <label class="form-label">سند
+                                <span class="text-red-500 px-2">*</span>
                             </label>
                         </div>
                         <div class="md:w-6/12">
@@ -86,8 +86,8 @@
                 <div class="mt-5">
                     <div class="md:flex md:items-center md:justify-center">
                         <div class="md:w-2/12">
-                            <label class="block text-gray-500 md:text-left mb-1 md:mb-0">توضیحات
-                                <span class="text-red-500 px-4">*</span>
+                            <label class="form-label">توضیحات
+                                <span class="text-red-500 px-2">*</span>
                             </label>
                         </div>
                         <div class="md:w-6/12">
@@ -100,7 +100,7 @@
             </div>
             <footer class="bg-gray-100 py-4  md:flex gap-5">
                 <button type="submit"
-                    :class="[teacherStore.loading === true ? 'bg-green-600 mr-10 text-white py-2 px-6 cursor-not-allowed rounded-lg focus:ring focus:ring-green-500' : 'bg-green-600 mr-10 text-white py-2 px-6 cursor-pointer rounded-lg focus:ring focus:ring-green-500']">
+                    :class="[teacherStore.loading === true ? 'footer-btn-indigo' : 'footer-btn-indigo']">
                     <span v-if="teacherStore.loading === true">
                         <svg class="animate-spin -ml-1 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24">
@@ -116,8 +116,8 @@
                     </span>
 
                 </button>
-                <router-link :to="{ name: 'app.dashboard' }"
-                    class="bg-gray-400 text-white py-2 px-5 cursor-pointer rounded-lg focus:ring focus:ring-gray-300">لغو
+                <router-link :to="{ name: 'app.teacher.details', params:{id:$route.params.id} }"
+                  class="footer-btn-red">لغو
                     ثبت</router-link>
             </footer>
         </form>

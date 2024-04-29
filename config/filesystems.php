@@ -42,6 +42,11 @@ return [
             'root' => storage_path('app/public/users'),
         ],
 
+        'documents' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/documents'),
+        ],
+
         // pdc file and photos
         'send_document' => [
             'driver' => 'local',
@@ -63,6 +68,12 @@ return [
             'root' => storage_path('app/public/pdc/archive'),
         ],
 
+        // workshop
+        'workshop' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/workshop'),
+        ],
+
         // teachers
         'teacher_photo' => [
             'driver' => 'local',
@@ -74,6 +85,12 @@ return [
         'teacher_document' => [
             'driver' => 'local',
             'root' => storage_path('app/public/teacher_document'),
+        ],
+
+        // teachers documents
+        'students' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/students'),
         ],
 
         'public' => [

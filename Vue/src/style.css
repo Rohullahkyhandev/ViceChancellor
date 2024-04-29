@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-all {
+    @apply bg-blue-600 py-2 px-3 flex items-center justify-center gap-3 rounded-lg shadow text-white focus:ring focus:ring-offset-2 focus:ring-indigo-600;
+}
+
+.footer-btn-indigo {
+    @apply bg-indigo-600 mr-10 text-white focus:ring   focus:ring-offset-2 focus:ring-indigo-500 focus:ring-opacity-40 py-2 px-6 cursor-pointer rounded-lg;
+}
+
+.footer-btn-red {
+   @apply bg-white shadow text-black py-2 px-5 focus:ring  focus:ring-offset-2 focus:ring-red-500 focus:ring-opacity-40 cursor-pointer rounded-lg ;
+}
+
+.form-label {
+      @apply block text-gray-500 md:text-left mb-1 md:mb-0 pl-4;
+}

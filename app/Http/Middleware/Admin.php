@@ -16,14 +16,13 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         return $next($request);
-        foreach (Auth::user()->permission as $permission) {
-            if ($permission->permission_name == 'admin') {
-                return $next($request);
-            }
+        if (isset(Auth::user()->permission)) {
+            return $next($request);
+        } else {
+            return response([
+                "message" => "Sorry My baby you don't have permission to perform this action"
+            ], 403);
         }
-
-        return back()->with('error', 'Your are Note admin to perform this action ');
     }
 }
